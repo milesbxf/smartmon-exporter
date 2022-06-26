@@ -9,7 +9,7 @@ import (
 type PerDeviceInfoMetric interface {
 	Desc() *prometheus.Desc
 	Update(chan<- prometheus.Metric) error
-	UpdateFromInfo(info *smartctl.InfoAllOutput) error
+	UpdateFromInfo(info smartctl.InfoAllOutput) error
 }
 
 type Metrics struct {
@@ -39,9 +39,10 @@ func NewMetrics() *Metrics {
 }
 
 type infoMetric struct {
-	PromDesc   *prometheus.Desc
-	UpdateFunc func(chan<- prometheus.Metric, *smartctl.InfoAllOutput, *prometheus.Desc) error
-	lastInfo   *smartctl.InfoAllOutput
+	PromDesc    *prometheus.Desc
+	UpdateFunc  func(chan<- prometheus.Metric, smartctl.InfoAllOutput, *prometheus.Desc) error
+	lastInfo    smartctl.InfoAllOutput
+	lastInfoSet bool
 }
 
 func (m *infoMetric) Desc() *prometheus.Desc {
@@ -49,13 +50,14 @@ func (m *infoMetric) Desc() *prometheus.Desc {
 }
 
 func (m *infoMetric) Update(metrics chan<- prometheus.Metric) error {
-	if m.lastInfo != nil {
+	if m.lastInfoSet {
 		return m.UpdateFunc(metrics, m.lastInfo, m.PromDesc)
 	}
 	return nil
 }
 
-func (m *infoMetric) UpdateFromInfo(info *smartctl.InfoAllOutput) error {
+func (m *infoMetric) UpdateFromInfo(info smartctl.InfoAllOutput) error {
 	m.lastInfo = info
+	m.lastInfoSet = true
 	return nil
 }

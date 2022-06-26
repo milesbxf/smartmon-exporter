@@ -13,7 +13,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device", "model_family", "model_name", "serial_number", "firmware_version"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.GaugeValue,
@@ -34,7 +34,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.GaugeValue,
@@ -51,7 +51,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.GaugeValue,
@@ -68,7 +68,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.GaugeValue,
@@ -85,7 +85,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.GaugeValue,
@@ -102,7 +102,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.GaugeValue,
@@ -119,7 +119,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			v := 0.
 			if output.SmartStatus.Passed {
 				v = 1.
@@ -140,7 +140,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.GaugeValue,
@@ -157,7 +157,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.CounterValue,
@@ -174,7 +174,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			metrics <- prometheus.MustNewConstMetric(
 				desc,
 				prometheus.CounterValue,
@@ -191,7 +191,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			for _, e := range output.AtaSmartAttributes.Table {
 				if e.Name == "Raw_Read_Error_Rate" {
 					metrics <- prometheus.MustNewConstMetric(
@@ -214,7 +214,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			for _, e := range output.AtaSmartAttributes.Table {
 				if e.Name == "Seek_Error_Rate" {
 					metrics <- prometheus.MustNewConstMetric(
@@ -237,7 +237,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			for _, e := range output.AtaSmartAttributes.Table {
 				if e.Name == "Reallocated_Sector_Ct" {
 					metrics <- prometheus.MustNewConstMetric(
@@ -260,7 +260,7 @@ var metrics = []PerDeviceInfoMetric{
 			[]string{"device"},
 			nil,
 		),
-		UpdateFunc: func(metrics chan<- prometheus.Metric, output *smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+		UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
 			for _, e := range output.AtaSmartAttributes.Table {
 				if e.Name == "Spin_Up_Time" {
 					metrics <- prometheus.MustNewConstMetric(

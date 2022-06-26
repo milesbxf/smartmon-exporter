@@ -46,7 +46,7 @@ func (c *collector) poll() error {
 			return err
 		}
 		for _, m := range c.metrics[i].metrics {
-			err := m.UpdateFromInfo(info)
+			err := m.UpdateFromInfo(*info)
 			if err != nil {
 				return err
 			}
