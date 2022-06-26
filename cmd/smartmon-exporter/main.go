@@ -13,15 +13,21 @@ import (
 )
 
 func main() {
-
 	addr := flag.String("listen-address", ":9101", "The address to listen on for HTTP requests.")
+	pollIntervalStr := flag.String("poll-interval", "1m", "The interval between polling for device information.")
 	flag.Parse()
+
+	pollInterval, err := time.ParseDuration(*pollIntervalStr)
+	if err != nil {
+		log.Fatal().Err(err).Msgf("Could not parse poll interval %s", *pollIntervalStr)
+	}
+
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 
 	s := smartctl.New()
 
-	c, err := collector.New(s, time.Minute)
+	c, err := collector.New(s, pollInterval)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to create collector")
 	}
