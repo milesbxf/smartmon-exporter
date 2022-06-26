@@ -17,6 +17,7 @@ type Device struct {
 }
 
 type ScanOpenOutput struct {
+	SmartExitCodeOutput
 	SmartCtlInfo `json:"smartctl"`
 	Devices      []Device `json:"devices"`
 }
@@ -199,6 +200,7 @@ type AtaSmartSelectiveSelfTestLog struct {
 }
 
 type InfoAllOutput struct {
+	SmartExitCodeOutput
 	SmartCtlInfo `json:"smartctl"`
 
 	Device                       `json:"device"`

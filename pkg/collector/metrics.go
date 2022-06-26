@@ -313,6 +313,160 @@ func NewMetrics() *Metrics {
 					return nil
 				},
 			},
+			&infoMetric{
+				PromDesc: prometheus.NewDesc(
+					"smart_device_open_failure",
+					"Whether the device failed to open",
+					[]string{"device"},
+					nil,
+				),
+				UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+					v := 0.
+					if output.SmartExitCodeOutput.DeviceOpenFailed {
+						v = 1.
+					}
+					metrics <- prometheus.MustNewConstMetric(
+						desc,
+						prometheus.GaugeValue,
+						v,
+						output.Device.Name,
+					)
+
+					return nil
+				},
+			},
+			&infoMetric{
+				PromDesc: prometheus.NewDesc(
+					"smart_device_command_failure",
+					"Whether a SMART command failed",
+					[]string{"device"},
+					nil,
+				),
+				UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+					v := 0.
+					if output.SmartExitCodeOutput.CommandFailed {
+						v = 1.
+					}
+					metrics <- prometheus.MustNewConstMetric(
+						desc,
+						prometheus.GaugeValue,
+						v,
+						output.Device.Name,
+					)
+
+					return nil
+				},
+			},
+			&infoMetric{
+				PromDesc: prometheus.NewDesc(
+					"smart_device_disk_failing",
+					"Whether SMART has detected a disk failure for this device",
+					[]string{"device"},
+					nil,
+				),
+				UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+					v := 0.
+					if output.SmartExitCodeOutput.DiskFailing {
+						v = 1.
+					}
+					metrics <- prometheus.MustNewConstMetric(
+						desc,
+						prometheus.GaugeValue,
+						v,
+						output.Device.Name,
+					)
+
+					return nil
+				},
+			},
+			&infoMetric{
+				PromDesc: prometheus.NewDesc(
+					"smart_device_prefailures_above_threshold",
+					"Whether SMART has detected prefailure signals currently above threshold",
+					[]string{"device"},
+					nil,
+				),
+				UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+					v := 0.
+					if output.SmartExitCodeOutput.PrefailAboveThreshold {
+						v = 1.
+					}
+					metrics <- prometheus.MustNewConstMetric(
+						desc,
+						prometheus.GaugeValue,
+						v,
+						output.Device.Name,
+					)
+
+					return nil
+				},
+			},
+			&infoMetric{
+				PromDesc: prometheus.NewDesc(
+					"smart_device_prefailures_above_threshold_in_past",
+					"Whether SMART has detected prefailure signals above threshold in the past",
+					[]string{"device"},
+					nil,
+				),
+				UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+					v := 0.
+					if output.SmartExitCodeOutput.PrefailAboveThresholdInPast {
+						v = 1.
+					}
+					metrics <- prometheus.MustNewConstMetric(
+						desc,
+						prometheus.GaugeValue,
+						v,
+						output.Device.Name,
+					)
+
+					return nil
+				},
+			},
+			&infoMetric{
+				PromDesc: prometheus.NewDesc(
+					"smart_device_errors_logged",
+					"Whether the device has logged errors",
+					[]string{"device"},
+					nil,
+				),
+				UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+					v := 0.
+					if output.SmartExitCodeOutput.DeviceErrorsLogged {
+						v = 1.
+					}
+					metrics <- prometheus.MustNewConstMetric(
+						desc,
+						prometheus.GaugeValue,
+						v,
+						output.Device.Name,
+					)
+
+					return nil
+				},
+			},
+			&infoMetric{
+				PromDesc: prometheus.NewDesc(
+					"smart_device_recent_self_test_errors",
+					"Whether a recent self test has failed",
+					[]string{"device"},
+					nil,
+				),
+				UpdateFunc: func(metrics chan<- prometheus.Metric, output smartctl.InfoAllOutput, desc *prometheus.Desc) error {
+					v := 0.
+					if output.SmartExitCodeOutput.RecentSelfTestErrors {
+						v = 1.
+					}
+					metrics <- prometheus.MustNewConstMetric(
+						desc,
+						prometheus.GaugeValue,
+						v,
+						output.Device.Name,
+					)
+
+					return nil
+				},
+			},
 		},
 	}
 }
