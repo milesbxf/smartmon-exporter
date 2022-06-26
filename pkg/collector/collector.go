@@ -3,6 +3,7 @@ package collector
 import (
 	"github.com/milesbxf/smartmon-exporter/pkg/smartctl"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/rs/zerolog/log"
 	"time"
 )
 
@@ -45,9 +46,10 @@ func (c *collector) poll() error {
 			// TODO: better error handling
 			return err
 		}
+		log.Info().Str("device", d).Msg("got info")
+
 		for _, m := range c.metrics[i].metrics {
-			err := m.UpdateFromInfo(*info)
-			if err != nil {
+			if err := m.UpdateFromInfo(*info); err != nil {
 				return err
 			}
 		}
@@ -65,6 +67,7 @@ func New(smart smartctl.SmartCtl, pollInterval time.Duration) (*collector, error
 	metrics := []*Metrics{}
 
 	for _, d := range scan.Devices {
+		log.Info().Str("device", d.Name).Msg("found device")
 		devices = append(devices, d.Name)
 		metrics = append(metrics, NewMetrics())
 	}

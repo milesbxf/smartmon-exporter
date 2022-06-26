@@ -31,6 +31,14 @@ func (m Metrics) Collect(metrics chan<- prometheus.Metric) {
 		Int("num_metrics", len(m.metrics)).
 		Msg("collected all metrics")
 }
+func (m *Metrics) UpdateFromInfo(info smartctl.InfoAllOutput) error {
+	for _, m := range m.metrics {
+		if err := m.UpdateFromInfo(info); err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
 func NewMetrics() *Metrics {
 	return &Metrics{
