@@ -28,7 +28,11 @@ func (s *smartctl) exec(args ...string) ([]byte, error) {
 	s.logger.Debug().
 		Str("command", strings.Join(cmd.Args, " ")).
 		Msg("executing command")
-	return cmd.CombinedOutput()
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		s.logger.Error().Err(err).Msgf("failed to execute command. Command output: %s", string(out))
+	}
+	return out, err
 }
 
 func (s *smartctl) ScanOpen() (*ScanOpenOutput, error) {
