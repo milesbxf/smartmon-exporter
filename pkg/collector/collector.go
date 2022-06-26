@@ -4,6 +4,7 @@ import (
 	"github.com/milesbxf/smartmon-exporter/pkg/smartctl"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/rs/zerolog/log"
+	"sync"
 	"time"
 )
 
@@ -16,34 +17,45 @@ type collector struct {
 	devices      []string
 	metrics      []*Metrics
 	pollInterval time.Duration
+	mu           sync.RWMutex
 }
 
 func (c *collector) Describe(descs chan<- *prometheus.Desc) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
 	for _, m := range c.metrics {
 		m.Describe(descs)
 	}
 }
 
 func (c *collector) Collect(metrics chan<- prometheus.Metric) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
 	for _, m := range c.metrics {
 		m.Collect(metrics)
 	}
 }
 
 func (c *collector) Run() error {
-	c.poll()
+	if err := c.poll(); err != nil {
+		log.Error().Err(err).Msg("failed to do initial poll")
+	}
+
 	t := time.NewTicker(c.pollInterval)
 	for range t.C {
-		c.poll()
+		if err := c.poll(); err != nil {
+			log.Error().Err(err).Msg("failed to poll")
+		}
 	}
 	return nil
 }
 
 func (c *collector) poll() error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	for i, d := range c.devices {
 		info, err := c.smart.InfoAll(d)
 		if err != nil {
-			// TODO: better error handling
 			return err
 		}
 		log.Info().Str("device", d).Msg("got info")
